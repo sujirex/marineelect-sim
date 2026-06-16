@@ -21,7 +21,7 @@
 body {
   background: var(--navy);
   color: var(--text);
-  font-family: "Inter", "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif;
   min-height: 100vh;
   background-image:
     radial-gradient(ellipse at 20% 0%, rgba(10,150,150,0.18) 0%, transparent 50%),
