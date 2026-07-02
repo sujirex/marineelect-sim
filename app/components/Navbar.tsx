@@ -60,9 +60,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Powered badge — hide on mobile */}
-        <span className="powered-badge nav-powered-desktop">⚙️ Powered by ShipSIM</span>
-
         {/* Theme toggle */}
         <button
           onClick={toggle}
@@ -109,7 +106,6 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-          <div className="powered-badge" style={{ marginTop: 8 }}>⚙️ Powered by ShipSIM</div>
         </div>
       )}
     </nav>

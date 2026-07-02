@@ -122,7 +122,7 @@ export default function ManeuveringPage() {
             <span className="gradient-text">Maneuvering Simulation</span>
           </h1>
           <p style={{ color: "#8fa3be", fontSize: "0.85rem" }}>
-            IMO standard sea trial simulations · MMG maneuvering model · ShipSIM physics engine
+            IMO standard sea trial simulations · MMG maneuvering model · 6-DoF physics
           </p>
         </div>
 
@@ -264,9 +264,7 @@ export default function ManeuveringPage() {
         <div className="glass" style={{ marginTop: 24, padding: "12px 16px", display: "flex", gap: 10, alignItems: "flex-start" }}>
           <span>⚙️</span>
           <span style={{ fontSize: "0.75rem", color: "#8fa3be" }}>
-            MMG equations from{" "}
-            <a href="https://github.com/BasilioPV/ShipSIM" target="_blank" rel="noopener noreferrer" style={{ color: "#00d4aa" }}>ShipSIM</a>
-            {" "}· IMO MSC.137(76) · Overshoot criterion: ≤{params.rudderAngle <= 10 ? "12" : "25"}° for {params.rudderAngle}° test.
+            MMG maneuvering equations · IMO MSC.137(76) · Overshoot criterion: ≤{params.rudderAngle <= 10 ? "12" : "25"}° for {params.rudderAngle}° test.
           </span>
         </div>
       </main>

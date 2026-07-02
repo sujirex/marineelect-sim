@@ -40,9 +40,6 @@ export default function Home() {
 
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <div className="powered-badge" style={{ marginBottom: 20, display: "inline-flex" }}>
-            ⚙️ Physics Engine: ShipSIM v2.0.0 · BSD-3-Clause · BasilioPV/ShipSIM
-          </div>
           <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.15, marginBottom: 16 }}>
             <span className="gradient-text">MarineElect</span>
             <br />
@@ -50,13 +47,10 @@ export default function Home() {
           </h1>
           <p style={{ color: "#8fa3be", fontSize: "1.1rem", maxWidth: 580, margin: "0 auto 32px" }}>
             Ship maneuvering, propulsion, and electrical simulation for marine engineers.
-            Real physics — powered by the ShipSIM Modelica library.
+            Real physics, real engineering.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <Link href="/maneuvering"><button className="btn-primary">▶ Run Simulation</button></Link>
-            <a href="https://github.com/BasilioPV/ShipSIM" target="_blank" rel="noopener noreferrer">
-              <button className="btn-outline">ShipSIM Source →</button>
-            </a>
           </div>
         </div>
 
@@ -98,23 +92,6 @@ export default function Home() {
               </div>
             </Link>
           ))}
-        </div>
-
-        {/* Attribution */}
-        <div className="glass" style={{ marginTop: 56, padding: "20px 28px", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-          <span style={{ fontSize: "1.5rem" }}>⚙️</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 600, color: "#e8edf5", fontSize: "0.9rem" }}>Physics Engine Attribution</div>
-            <div style={{ color: "#8fa3be", fontSize: "0.82rem", marginTop: 3 }}>
-              Simulation physics provided by{" "}
-              <a href="https://github.com/BasilioPV/ShipSIM" target="_blank" rel="noopener noreferrer"
-                style={{ color: "#00d4aa", textDecoration: "none" }}>ShipSIM</a>
-              {" "}by Basilio Puente Varela & M. Dolores Fernandez Ballesteros · Licensed BSD-3-Clause ·
-              MarineElect integration layer by{" "}
-              <a href="https://sujikumar.com" target="_blank" rel="noopener noreferrer"
-                style={{ color: "#00bfff", textDecoration: "none" }}>Suji C</a>
-            </div>
-          </div>
         </div>
 
       </main>

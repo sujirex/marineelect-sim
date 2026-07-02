@@ -100,7 +100,7 @@ export default function PropulsionPage() {
           <h1 style={{ fontSize: isMobile ? "1.4rem" : "1.8rem", fontWeight: 800, marginBottom: 6 }}>
             <span className="gradient-text">Propulsion Analysis</span>
           </h1>
-          <p style={{ color: "#8fa3be", fontSize: "0.85rem" }}>Wageningen B-Series · KT/KQ open water · ShipSIM coefficients</p>
+          <p style={{ color: "#8fa3be", fontSize: "0.85rem" }}>Wageningen B-Series · KT/KQ open water · Published polynomial coefficients</p>
         </div>
 
         {/* Presets */}
@@ -229,9 +229,7 @@ export default function PropulsionPage() {
         <div className="glass" style={{ marginTop: 24, padding: "12px 16px", display: "flex", gap: 10, alignItems: "flex-start" }}>
           <span>⚙️</span>
           <span style={{ fontSize: "0.75rem", color: "#8fa3be" }}>
-            Wageningen B-series from{" "}
-            <a href="https://github.com/BasilioPV/ShipSIM" target="_blank" rel="noopener noreferrer" style={{ color: "#00d4aa" }}>ShipSIM</a>
-            {" "}· Oosterveld & van Oossanen (1975) · Cavitation: Burrill Ct criterion.
+            Wageningen B-series · Oosterveld & van Oossanen (1975) · Cavitation: Burrill Ct criterion.
           </span>
         </div>
       </main>

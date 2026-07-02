@@ -1,3 +1,9 @@
+# MarineElect Simulation Engine
+
+Ship maneuvering, propulsion, and electrical simulation for marine engineers.
+
+**Attribution:** Simulation physics derived in part from [ShipSIM](https://github.com/BasilioPV/ShipSIM) (BSD-3-Clause) by Basilio Puente Varela & M. Dolores Fernandez Ballesteros. See [LICENSE-THIRD-PARTY.md](LICENSE-THIRD-PARTY.md).
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

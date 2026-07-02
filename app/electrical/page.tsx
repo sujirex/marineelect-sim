@@ -304,9 +304,7 @@ export default function ElectricalPage() {
         <div className="glass" style={{ marginTop: 24, padding: "14px 20px", display: "flex", gap: 10, alignItems: "center" }}>
           <span>⚙️</span>
           <span style={{ fontSize: "0.78rem", color: "#8fa3be" }}>
-            Electrical plant analysis based on{" "}
-            <a href="https://github.com/BasilioPV/ShipSIM" target="_blank" rel="noopener noreferrer" style={{ color: "#00d4aa" }}>ShipSIM</a>
-            {" "}ElectricPowerPlant component models · IEC 60092 / SOLAS load table methodology · Diversity factors per DNV-RP-0353.
+            Electrical plant analysis · IEC 60092 / SOLAS load table methodology · Diversity factors per DNV-RP-0353.
           </span>
         </div>
       </main>

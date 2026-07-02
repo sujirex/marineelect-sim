@@ -4,7 +4,7 @@ import { ThemeProvider } from "../context/ThemeContext";
 
 export const metadata: Metadata = {
   title: "MarineElect Simulation Engine",
-  description: "Ship maneuvering, propulsion, and electrical simulation powered by ShipSIM physics engine",
+  description: "Ship maneuvering, propulsion, and electrical simulation for marine engineers",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
