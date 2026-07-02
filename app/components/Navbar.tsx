@@ -105,4 +105,13 @@ export default function Navbar() {
               style={{
                 display: "block", padding: "10px 12px", borderRadius: 6,
                 background: path === href ? "rgba(10,150,150,0.15)" : "transparent",
-      
+              }}>
+              {label}
+            </Link>
+          ))}
+          <div className="powered-badge" style={{ marginTop: 8 }}>⚙️ Powered by ShipSIM</div>
+        </div>
+      )}
+    </nav>
+  )
+}
