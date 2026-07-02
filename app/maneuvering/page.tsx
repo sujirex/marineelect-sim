@@ -79,7 +79,7 @@ function generateTurningCircle(params: ShipParams) {
 
 const numInputStyle: React.CSSProperties = {
   width: 64, background: "rgba(0,191,255,0.08)", border: "1px solid rgba(0,191,255,0.2)",
-  borderRadius: 5, color: "#e8edf5", fontSize: "0.78rem", padding: "3px 6px", outline: "none", textAlign: "right" as const
+  borderRadius: 5, color: "var(--text-strong)", fontSize: "0.78rem", padding: "3px 6px", outline: "none", textAlign: "right" as const
 }
 
 export default function ManeuveringPage() {
@@ -121,7 +121,7 @@ export default function ManeuveringPage() {
           <h1 style={{ fontSize: isMobile ? "1.4rem" : "1.8rem", fontWeight: 800, marginBottom: 6 }}>
             <span className="gradient-text">Maneuvering Simulation</span>
           </h1>
-          <p style={{ color: "#8fa3be", fontSize: "0.85rem" }}>
+          <p style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>
             IMO standard sea trial simulations · MMG maneuvering model · 6-DoF physics
           </p>
         </div>
@@ -130,7 +130,7 @@ export default function ManeuveringPage() {
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
           {Object.entries(PRESETS).map(([key, p]) => (
             <button key={key} onClick={() => applyPreset(key)}
-              style={{ background: "rgba(0,191,255,0.1)", border: "1px solid rgba(0,191,255,0.25)", borderRadius: 7, color: "#00bfff", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
+              style={{ background: "rgba(0,191,255,0.1)", border: "1px solid rgba(0,191,255,0.25)", borderRadius: 7, color: "var(--accent2)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
               {p.label}
             </button>
           ))}
@@ -139,10 +139,10 @@ export default function ManeuveringPage() {
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "300px 1fr", gap: 20, alignItems: "start" }}>
           {/* Inputs */}
           <div className="glass" style={{ padding: isMobile ? 16 : 24 }}>
-            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "#00bfff" }}>⚙️ Ship Parameters</h3>
+            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "var(--accent2)" }}>⚙️ Ship Parameters</h3>
             {fields.map(({ label, key, min, max, step }) => (
               <div key={key} style={{ marginBottom: 12 }}>
-                <label style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "#8fa3be", marginBottom: 4 }}>
+                <label style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "var(--text-dim)", marginBottom: 4 }}>
                   <span>{label}</span>
                   <input type="number" min={min} max={max} step={step}
                     value={params[key] as number}
@@ -152,12 +152,12 @@ export default function ManeuveringPage() {
                 <input type="range" min={min} max={max} step={step}
                   value={params[key] as number}
                   onChange={e => set(key, parseFloat(e.target.value))}
-                  style={{ width: "100%", accentColor: "#00bfff" }} />
+                  style={{ width: "100%", accentColor: "var(--accent2)" }} />
               </div>
             ))}
 
             <div style={{ marginBottom: 18 }}>
-              <label style={{ fontSize: "0.78rem", color: "#8fa3be", display: "block", marginBottom: 6 }}>Test Type</label>
+              <label style={{ fontSize: "0.78rem", color: "var(--text-dim)", display: "block", marginBottom: 6 }}>Test Type</label>
               <select value={params.testType} onChange={e => { set("testType", e.target.value); setRan(false) }}
                 className="input-field" style={{ padding: "8px 12px" }}>
                 <option value="zigzag">Zig-Zag Maneuver</option>
@@ -172,8 +172,8 @@ export default function ManeuveringPage() {
 
             {ran && (
               <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,212,170,0.08)", borderRadius: 8, border: "1px solid rgba(0,212,170,0.2)" }}>
-                <div style={{ fontSize: "0.75rem", color: "#00d4aa", fontWeight: 600, marginBottom: 4 }}>✓ Simulation Complete</div>
-                <div style={{ fontSize: "0.72rem", color: "#8fa3be" }}>
+                <div style={{ fontSize: "0.75rem", color: "var(--success)", fontWeight: 600, marginBottom: 4 }}>✓ Simulation Complete</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>
                   L/B: {(params.Lpp / params.B).toFixed(1)} · Fn: {(params.speed * 0.5144 / Math.sqrt(9.81 * params.Lpp)).toFixed(3)}
                 </div>
               </div>
@@ -185,7 +185,7 @@ export default function ManeuveringPage() {
             {!ran && (
               <div className="glass" style={{ padding: isMobile ? 32 : 60, textAlign: "center" }}>
                 <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🧭</div>
-                <p style={{ color: "#8fa3be", fontSize: "0.9rem" }}>Select a preset or set parameters, then click <strong style={{ color: "#00bfff" }}>Run Simulation</strong></p>
+                <p style={{ color: "var(--text-dim)", fontSize: "0.9rem" }}>Select a preset or set parameters, then click <strong style={{ color: "var(--accent2)" }}>Run Simulation</strong></p>
               </div>
             )}
 
@@ -194,7 +194,7 @@ export default function ManeuveringPage() {
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 10, marginBottom: 16 }}>
                   <div>
                     <h3 style={{ fontWeight: 700, marginBottom: 4, fontSize: "0.95rem" }}>Zig-Zag {params.rudderAngle}/{params.rudderAngle}</h3>
-                    <p style={{ color: "#8fa3be", fontSize: "0.75rem" }}>IMO MSC.137(76)</p>
+                    <p style={{ color: "var(--text-dim)", fontSize: "0.75rem" }}>IMO MSC.137(76)</p>
                   </div>
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {[
@@ -203,23 +203,23 @@ export default function ManeuveringPage() {
                       { l: `≤${zigzag.limit}°`, v: zigzag.pass ? "✓ PASS" : "✗ FAIL", pass: true },
                     ].map(({ l, v, pass: isResult }) => (
                       <div key={l} style={{ padding: "6px 10px", background: isResult ? (zigzag.pass ? "rgba(0,212,170,0.1)" : "rgba(239,68,68,0.1)") : "rgba(0,191,255,0.08)", borderRadius: 7, border: `1px solid ${isResult ? (zigzag.pass ? "rgba(0,212,170,0.3)" : "rgba(239,68,68,0.3)") : "rgba(0,191,255,0.2)"}`, textAlign: "center", minWidth: 60 }}>
-                        <div style={{ fontSize: "0.9rem", fontWeight: 700, color: isResult ? (zigzag.pass ? "#00d4aa" : "#ef4444") : "#00bfff" }}>{v}</div>
-                        <div style={{ fontSize: "0.65rem", color: "#8fa3be", marginTop: 1 }}>{l}</div>
+                        <div style={{ fontSize: "0.9rem", fontWeight: 700, color: isResult ? (zigzag.pass ? "var(--success)" : "#ef4444") : "var(--accent2)" }}>{v}</div>
+                        <div style={{ fontSize: "0.65rem", color: "var(--text-dim)", marginTop: 1 }}>{l}</div>
                       </div>
                     ))}
                   </div>
                 </div>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <LineChart data={zigzag.data}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                    <XAxis dataKey="t" stroke="#8fa3be" fontSize={10} label={{ value: "Time (s)", position: "insideBottom", offset: -4, fill: "#8fa3be", fontSize: 10 }} />
-                    <YAxis stroke="#8fa3be" fontSize={10} label={{ value: "Angle (°)", angle: -90, position: "insideLeft", fill: "#8fa3be", fontSize: 10 }} />
-                    <Tooltip contentStyle={{ background: "#0f2040", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                    <XAxis dataKey="t" stroke="var(--text-dim)" fontSize={10} label={{ value: "Time (s)", position: "insideBottom", offset: -4, fill: "var(--text-dim)", fontSize: 10 }} />
+                    <YAxis stroke="var(--text-dim)" fontSize={10} label={{ value: "Angle (°)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 10 }} />
+                    <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }} />
                     <Legend wrapperStyle={{ fontSize: "0.75rem", paddingTop: 8 }} />
-                    <ReferenceLine y={0} stroke="rgba(255,255,255,0.15)" />
+                    <ReferenceLine y={0} stroke="rgba(125,160,160,0.35)" />
                     <ReferenceLine y={params.rudderAngle} stroke="rgba(245,158,11,0.2)" strokeDasharray="4 2" />
                     <ReferenceLine y={-params.rudderAngle} stroke="rgba(245,158,11,0.2)" strokeDasharray="4 2" />
-                    <Line type="monotone" dataKey="heading" stroke="#00bfff" strokeWidth={2} dot={false} name="Heading (°)" />
+                    <Line type="monotone" dataKey="heading" stroke="var(--accent2)" strokeWidth={2} dot={false} name="Heading (°)" />
                     <Line type="monotone" dataKey="rudder" stroke="#f59e0b" strokeWidth={1.5} dot={false} strokeDasharray="4 2" name="Rudder (°)" />
                   </LineChart>
                 </ResponsiveContainer>
@@ -229,7 +229,7 @@ export default function ManeuveringPage() {
             {ran && tc && (params.testType === "turning" || params.testType === "both") && (
               <div className="glass" style={{ padding: isMobile ? 14 : 24 }}>
                 <h3 style={{ fontWeight: 700, marginBottom: 4, fontSize: "0.95rem" }}>Turning Circle</h3>
-                <p style={{ color: "#8fa3be", fontSize: "0.75rem", marginBottom: 14 }}>Rudder hardover {params.rudderAngle}°</p>
+                <p style={{ color: "var(--text-dim)", fontSize: "0.75rem", marginBottom: 14 }}>Rudder hardover {params.rudderAngle}°</p>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: 16 }}>
                   {[
                     { l: "Turning Radius", v: `${tc.turningRadius} m`, sub: `${(tc.turningRadius / params.Lpp).toFixed(2)}×Lpp` },
@@ -237,23 +237,23 @@ export default function ManeuveringPage() {
                     { l: "Tactical Dia.", v: `${tc.tactical} m`,      sub: `${(tc.tactical / params.Lpp).toFixed(2)}×Lpp` },
                   ].map(({ l, v, sub }) => (
                     <div key={l} className="stat-card" style={{ padding: isMobile ? "10px 8px" : undefined }}>
-                      <div style={{ fontSize: isMobile ? "0.85rem" : "1.1rem", fontWeight: 700, color: "#00bfff" }}>{v}</div>
-                      <div style={{ fontSize: "0.65rem", color: "#8fa3be", marginTop: 2 }}>{sub}</div>
-                      <div style={{ fontSize: "0.65rem", color: "#4a6080", marginTop: 1 }}>{l}</div>
+                      <div style={{ fontSize: isMobile ? "0.85rem" : "1.1rem", fontWeight: 700, color: "var(--accent2)" }}>{v}</div>
+                      <div style={{ fontSize: "0.65rem", color: "var(--text-dim)", marginTop: 2 }}>{sub}</div>
+                      <div style={{ fontSize: "0.65rem", color: "var(--text-faint)", marginTop: 1 }}>{l}</div>
                     </div>
                   ))}
                 </div>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <ScatterChart>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                    <XAxis dataKey="x" type="number" stroke="#8fa3be" fontSize={10} domain={["dataMin - 50", "dataMax + 50"]}
-                      label={{ value: "X (m)", position: "insideBottom", offset: -4, fill: "#8fa3be", fontSize: 10 }} />
-                    <YAxis dataKey="y" type="number" stroke="#8fa3be" fontSize={10}
-                      label={{ value: "Y (m)", angle: -90, position: "insideLeft", fill: "#8fa3be", fontSize: 10 }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                    <XAxis dataKey="x" type="number" stroke="var(--text-dim)" fontSize={10} domain={["dataMin - 50", "dataMax + 50"]}
+                      label={{ value: "X (m)", position: "insideBottom", offset: -4, fill: "var(--text-dim)", fontSize: 10 }} />
+                    <YAxis dataKey="y" type="number" stroke="var(--text-dim)" fontSize={10}
+                      label={{ value: "Y (m)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 10 }} />
                     <Tooltip cursor={{ strokeDasharray: "3 3" }}
-                      contentStyle={{ background: "#0f2040", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }}
+                      contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }}
                       formatter={(v: number) => [`${v} m`]} />
-                    <Scatter name="Ship Track" data={tc.data} fill="#00d4aa" line={{ stroke: "#00d4aa", strokeWidth: 2.5 }} />
+                    <Scatter name="Ship Track" data={tc.data} fill="var(--success)" line={{ stroke: "var(--success)", strokeWidth: 2.5 }} />
                   </ScatterChart>
                 </ResponsiveContainer>
               </div>
@@ -263,7 +263,7 @@ export default function ManeuveringPage() {
 
         <div className="glass" style={{ marginTop: 24, padding: "12px 16px", display: "flex", gap: 10, alignItems: "flex-start" }}>
           <span>⚙️</span>
-          <span style={{ fontSize: "0.75rem", color: "#8fa3be" }}>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-dim)" }}>
             MMG maneuvering equations · IMO MSC.137(76) · Overshoot criterion: ≤{params.rudderAngle <= 10 ? "12" : "25"}° for {params.rudderAngle}° test.
           </span>
         </div>
@@ -271,3 +271,4 @@ export default function ManeuveringPage() {
     </div>
   )
 }
+                                                                                                                                                                      
