@@ -1,7 +1,9 @@
 "use client"
 import { useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
+import { Settings2, Play, Compass, Info } from "lucide-react"
 import { useIsMobile } from "../hooks/useIsMobile"
+import { useCssVar } from "../../context/useCssVar"
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, ReferenceLine, ScatterChart, Scatter
@@ -78,12 +80,13 @@ function generateTurningCircle(params: ShipParams) {
 }
 
 const numInputStyle: React.CSSProperties = {
-  width: 64, background: "rgba(0,191,255,0.08)", border: "1px solid rgba(0,191,255,0.2)",
+  width: 64, background: "color-mix(in srgb, var(--g2) 8%, transparent)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)",
   borderRadius: 5, color: "var(--text-strong)", fontSize: "0.78rem", padding: "3px 6px", outline: "none", textAlign: "right" as const
 }
 
 export default function ManeuveringPage() {
   const isMobile = useIsMobile()
+  const cv = useCssVar()
   const [params, setParams] = useState<ShipParams>({
     Lpp: 175, B: 28, T: 9.5, Cb: 0.72, speed: 15, rudderAngle: 20, testType: "both"
   })
@@ -130,7 +133,7 @@ export default function ManeuveringPage() {
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
           {Object.entries(PRESETS).map(([key, p]) => (
             <button key={key} onClick={() => applyPreset(key)}
-              style={{ background: "rgba(0,191,255,0.1)", border: "1px solid rgba(0,191,255,0.25)", borderRadius: 7, color: "var(--accent2)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
+              style={{ background: "color-mix(in srgb, var(--g2) 10%, transparent)", border: "1px solid color-mix(in srgb, var(--g2) 25%, transparent)", borderRadius: 7, color: "var(--accent2)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
               {p.label}
             </button>
           ))}
@@ -139,7 +142,7 @@ export default function ManeuveringPage() {
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "300px 1fr", gap: 20, alignItems: "start" }}>
           {/* Inputs */}
           <div className="glass" style={{ padding: isMobile ? 16 : 24 }}>
-            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "var(--accent2)" }}>⚙️ Ship Parameters</h3>
+            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "var(--ink)", display: "flex", alignItems: "center", gap: 8 }}><Settings2 size={16} color="var(--g2)" /> Ship Parameters</h3>
             {fields.map(({ label, key, min, max, step }) => (
               <div key={key} style={{ marginBottom: 12 }}>
                 <label style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "var(--text-dim)", marginBottom: 4 }}>
@@ -167,11 +170,11 @@ export default function ManeuveringPage() {
             </div>
 
             <button className="btn-primary" style={{ width: "100%" }} onClick={() => setRan(true)}>
-              ▶ Run Simulation
+              <Play size={14} /> Run Simulation
             </button>
 
             {ran && (
-              <div style={{ marginTop: 12, padding: "10px 14px", background: "rgba(0,212,170,0.08)", borderRadius: 8, border: "1px solid rgba(0,212,170,0.2)" }}>
+              <div style={{ marginTop: 12, padding: "10px 14px", background: "color-mix(in srgb, var(--ok) 8%, transparent)", borderRadius: 8, border: "1px solid color-mix(in srgb, var(--ok) 20%, transparent)" }}>
                 <div style={{ fontSize: "0.75rem", color: "var(--success)", fontWeight: 600, marginBottom: 4 }}>✓ Simulation Complete</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>
                   L/B: {(params.Lpp / params.B).toFixed(1)} · Fn: {(params.speed * 0.5144 / Math.sqrt(9.81 * params.Lpp)).toFixed(3)}
@@ -184,7 +187,7 @@ export default function ManeuveringPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             {!ran && (
               <div className="glass" style={{ padding: isMobile ? 32 : 60, textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🧭</div>
+                <div className="empty-ic"><Compass size={30} /></div>
                 <p style={{ color: "var(--text-dim)", fontSize: "0.9rem" }}>Select a preset or set parameters, then click <strong style={{ color: "var(--accent2)" }}>Run Simulation</strong></p>
               </div>
             )}
@@ -202,8 +205,8 @@ export default function ManeuveringPage() {
                       { l: "2nd OS", v: `${zigzag.oa2}°` },
                       { l: `≤${zigzag.limit}°`, v: zigzag.pass ? "✓ PASS" : "✗ FAIL", pass: true },
                     ].map(({ l, v, pass: isResult }) => (
-                      <div key={l} style={{ padding: "6px 10px", background: isResult ? (zigzag.pass ? "rgba(0,212,170,0.1)" : "rgba(239,68,68,0.1)") : "rgba(0,191,255,0.08)", borderRadius: 7, border: `1px solid ${isResult ? (zigzag.pass ? "rgba(0,212,170,0.3)" : "rgba(239,68,68,0.3)") : "rgba(0,191,255,0.2)"}`, textAlign: "center", minWidth: 60 }}>
-                        <div style={{ fontSize: "0.9rem", fontWeight: 700, color: isResult ? (zigzag.pass ? "var(--success)" : "#ef4444") : "var(--accent2)" }}>{v}</div>
+                      <div key={l} style={{ padding: "6px 10px", background: isResult ? (zigzag.pass ? "color-mix(in srgb, var(--ok) 10%, transparent)" : "color-mix(in srgb, var(--t-danger) 10%, transparent)") : "color-mix(in srgb, var(--g2) 8%, transparent)", borderRadius: 7, border: `1px solid ${isResult ? (zigzag.pass ? "color-mix(in srgb, var(--ok) 30%, transparent)" : "color-mix(in srgb, var(--t-danger) 30%, transparent)") : "color-mix(in srgb, var(--g2) 20%, transparent)"}`, textAlign: "center", minWidth: 60 }}>
+                        <div style={{ fontSize: "0.9rem", fontWeight: 700, color: isResult ? (zigzag.pass ? "var(--success)" : "var(--t-danger)") : "var(--accent2)" }}>{v}</div>
                         <div style={{ fontSize: "0.65rem", color: "var(--text-dim)", marginTop: 1 }}>{l}</div>
                       </div>
                     ))}
@@ -211,16 +214,16 @@ export default function ManeuveringPage() {
                 </div>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <LineChart data={zigzag.data}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                    <XAxis dataKey="t" stroke="var(--text-dim)" fontSize={10} label={{ value: "Time (s)", position: "insideBottom", offset: -4, fill: "var(--text-dim)", fontSize: 10 }} />
-                    <YAxis stroke="var(--text-dim)" fontSize={10} label={{ value: "Angle (°)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 10 }} />
-                    <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={cv("var(--border)")} />
+                    <XAxis dataKey="t" stroke={cv("var(--text-dim)")} fontSize={10} label={{ value: "Time (s)", position: "insideBottom", offset: -4, fill: cv("var(--text-dim)"), fontSize: 10 }} />
+                    <YAxis stroke={cv("var(--text-dim)")} fontSize={10} label={{ value: "Angle (°)", angle: -90, position: "insideLeft", fill: cv("var(--text-dim)"), fontSize: 10 }} />
+                    <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)", borderRadius: 8, fontSize: "0.78rem" }} />
                     <Legend wrapperStyle={{ fontSize: "0.75rem", paddingTop: 8 }} />
-                    <ReferenceLine y={0} stroke="rgba(125,160,160,0.35)" />
-                    <ReferenceLine y={params.rudderAngle} stroke="rgba(245,158,11,0.2)" strokeDasharray="4 2" />
-                    <ReferenceLine y={-params.rudderAngle} stroke="rgba(245,158,11,0.2)" strokeDasharray="4 2" />
-                    <Line type="monotone" dataKey="heading" stroke="var(--accent2)" strokeWidth={2} dot={false} name="Heading (°)" />
-                    <Line type="monotone" dataKey="rudder" stroke="#f59e0b" strokeWidth={1.5} dot={false} strokeDasharray="4 2" name="Rudder (°)" />
+                    <ReferenceLine y={0} stroke={cv("var(--faint)")} strokeOpacity={0.35} />
+                    <ReferenceLine y={params.rudderAngle} stroke={cv("var(--t-warn)")} strokeOpacity={0.2} strokeDasharray="4 2" />
+                    <ReferenceLine y={-params.rudderAngle} stroke={cv("var(--t-warn)")} strokeOpacity={0.2} strokeDasharray="4 2" />
+                    <Line type="monotone" dataKey="heading" stroke={cv("var(--accent2)")} strokeWidth={2} dot={false} name="Heading (°)" />
+                    <Line type="monotone" dataKey="rudder" stroke={cv("var(--t-warn)")} strokeWidth={1.5} dot={false} strokeDasharray="4 2" name="Rudder (°)" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -245,15 +248,15 @@ export default function ManeuveringPage() {
                 </div>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <ScatterChart>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                    <XAxis dataKey="x" type="number" stroke="var(--text-dim)" fontSize={10} domain={["dataMin - 50", "dataMax + 50"]}
-                      label={{ value: "X (m)", position: "insideBottom", offset: -4, fill: "var(--text-dim)", fontSize: 10 }} />
-                    <YAxis dataKey="y" type="number" stroke="var(--text-dim)" fontSize={10}
-                      label={{ value: "Y (m)", angle: -90, position: "insideLeft", fill: "var(--text-dim)", fontSize: 10 }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={cv("var(--border)")} />
+                    <XAxis dataKey="x" type="number" stroke={cv("var(--text-dim)")} fontSize={10} domain={["dataMin - 50", "dataMax + 50"]}
+                      label={{ value: "X (m)", position: "insideBottom", offset: -4, fill: cv("var(--text-dim)"), fontSize: 10 }} />
+                    <YAxis dataKey="y" type="number" stroke={cv("var(--text-dim)")} fontSize={10}
+                      label={{ value: "Y (m)", angle: -90, position: "insideLeft", fill: cv("var(--text-dim)"), fontSize: 10 }} />
                     <Tooltip cursor={{ strokeDasharray: "3 3" }}
-                      contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }}
+                      contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)", borderRadius: 8, fontSize: "0.78rem" }}
                       formatter={(v: number) => [`${v} m`]} />
-                    <Scatter name="Ship Track" data={tc.data} fill="var(--success)" line={{ stroke: "var(--success)", strokeWidth: 2.5 }} />
+                    <Scatter name="Ship Track" data={tc.data} fill={cv("var(--success)")} line={{ stroke: cv("var(--success)"), strokeWidth: 2.5 }} />
                   </ScatterChart>
                 </ResponsiveContainer>
               </div>
@@ -262,7 +265,7 @@ export default function ManeuveringPage() {
         </div>
 
         <div className="glass" style={{ marginTop: 24, padding: "12px 16px", display: "flex", gap: 10, alignItems: "flex-start" }}>
-          <span>⚙️</span>
+          <Info size={15} color="var(--faint)" style={{ flexShrink: 0, marginTop: 1 }} />
           <span style={{ fontSize: "0.75rem", color: "var(--text-dim)" }}>
             MMG maneuvering equations · IMO MSC.137(76) · Overshoot criterion: ≤{params.rudderAngle <= 10 ? "12" : "25"}° for {params.rudderAngle}° test.
           </span>

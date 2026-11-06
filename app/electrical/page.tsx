@@ -1,7 +1,9 @@
 "use client"
 import { useState, useMemo } from "react"
 import { useIsMobile } from "../hooks/useIsMobile"
+import { useCssVar } from "../../context/useCssVar"
 import Navbar from "../components/Navbar"
+import { Zap, Play, Pencil, Info } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
 
 interface Load { name: string; kW: number; pf: number; qty: number; running: boolean }
@@ -20,11 +22,11 @@ const DEFAULT_LOADS: Load[] = [
 ]
 
 const GEN_SIZES = [500, 750, 1000, 1250, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 8000, 10000]
-const COLORS = ["var(--accent2)","var(--success)","#f59e0b","#a78bfa","#ef4444","#10b981","#f97316","#6366f1","#14b8a6","#e879f9"]
+const COLORS = ["var(--g2)","var(--g3)","var(--g1)","var(--g4)","var(--spark)","var(--ok)","var(--t-warn)","var(--action)","var(--signal)","var(--t-danger)"]
 
 const inputStyle: React.CSSProperties = {
-  background: "rgba(0,191,255,0.07)",
-  border: "1px solid rgba(0,191,255,0.2)",
+  background: "color-mix(in srgb, var(--g2) 7%, transparent)",
+  border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)",
   borderRadius: 5,
   color: "var(--text-strong)",
   fontSize: "0.82rem",
@@ -55,6 +57,7 @@ function calcLoads(loads: Load[]) {
 
 export default function ElectricalPage() {
   const isMobile = useIsMobile()
+  const cv = useCssVar()
   const [loads, setLoads] = useState<Load[]>(DEFAULT_LOADS)
   const [voltage, setVoltage] = useState(440)
   const [ran, setRan] = useState(false)
@@ -148,7 +151,7 @@ export default function ElectricalPage() {
           {/* Load table */}
           <div className="glass" style={{ padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
-              <h3 style={{ fontWeight: 700, fontSize: "0.95rem", color: "#f59e0b" }}>⚡ Electrical Consumers</h3>
+              <h3 style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--ink)", display: "flex", alignItems: "center", gap: 8 }}><Zap size={16} color="var(--spark)" /> Electrical Consumers</h3>
               <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
                 <label style={{ fontSize: "0.8rem", color: "var(--text-dim)" }}>Bus Voltage:</label>
                 <select value={voltage} onChange={e => setVoltage(+e.target.value)}
@@ -156,20 +159,20 @@ export default function ElectricalPage() {
                   {[220, 380, 440, 660, 6600, 11000].map(v => <option key={v} value={v}>{v}V</option>)}
                 </select>
                 <button onClick={resetDefaults}
-                  style={{ background: "rgba(125,160,160,0.10)", border: "1px solid rgba(125,160,160,0.35)", borderRadius: 6, color: "var(--text-dim)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer" }}>
+                  style={{ background: "color-mix(in srgb, var(--faint) 10%, transparent)", border: "1px solid color-mix(in srgb, var(--faint) 35%, transparent)", borderRadius: 6, color: "var(--text-dim)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer" }}>
                   Reset Defaults
                 </button>
               </div>
             </div>
 
             <p style={{ fontSize: "0.75rem", color: "var(--text-faint)", marginBottom: 12 }}>
-              ✏️ Click any kW, PF, or Qty cell to edit · Toggle ON/OFF · Add or remove rows as needed
+              <Pencil size={12} className="ic" /> Click any kW, PF, or Qty cell to edit · Toggle ON/OFF · Add or remove rows as needed
             </p>
 
             <div style={{ overflowX: "auto" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.82rem" }}>
                 <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(0,191,255,0.15)" }}>
+                  <tr style={{ borderBottom: "1px solid color-mix(in srgb, var(--g2) 15%, transparent)" }}>
                     {["Consumer", "kW", "PF", "Qty", "kVA", "Running", ""].map(h => (
                       <th key={h} style={{ padding: "8px 10px", textAlign: "left", color: "var(--text-dim)", fontWeight: 600, whiteSpace: "nowrap" }}>{h}</th>
                     ))}
@@ -177,7 +180,7 @@ export default function ElectricalPage() {
                 </thead>
                 <tbody>
                   {loads.map((l, i) => (
-                    <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: l.running ? "rgba(0,191,255,0.03)" : "transparent" }}>
+                    <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: l.running ? "color-mix(in srgb, var(--g2) 3%, transparent)" : "transparent" }}>
                       <td style={{ padding: "7px 10px", minWidth: 160 }}>
                         <input
                           value={l.name}
@@ -217,13 +220,13 @@ export default function ElectricalPage() {
                       </td>
                       <td style={{ padding: "7px 10px" }}>
                         <button onClick={() => toggleRunning(i)}
-                          style={{ background: l.running ? "rgba(0,212,170,0.15)" : "rgba(125,160,160,0.10)", border: `1px solid ${l.running ? "rgba(0,212,170,0.4)" : "rgba(125,160,160,0.35)"}`, borderRadius: 20, padding: "2px 12px", color: l.running ? "var(--success)" : "var(--text-faint)", cursor: "pointer", fontSize: "0.75rem", fontWeight: 600 }}>
+                          style={{ background: l.running ? "color-mix(in srgb, var(--ok) 15%, transparent)" : "color-mix(in srgb, var(--faint) 10%, transparent)", border: `1px solid ${l.running ? "color-mix(in srgb, var(--ok) 40%, transparent)" : "color-mix(in srgb, var(--faint) 35%, transparent)"}`, borderRadius: 20, padding: "2px 12px", color: l.running ? "var(--success)" : "var(--text-faint)", cursor: "pointer", fontSize: "0.75rem", fontWeight: 600 }}>
                           {l.running ? "ON" : "OFF"}
                         </button>
                       </td>
                       <td style={{ padding: "7px 6px" }}>
                         <button onClick={() => deleteRow(i)}
-                          style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 5, color: "#ef4444", fontSize: "0.75rem", padding: "2px 8px", cursor: "pointer" }}>
+                          style={{ background: "color-mix(in srgb, var(--t-danger) 10%, transparent)", border: "1px solid color-mix(in srgb, var(--t-danger) 25%, transparent)", borderRadius: 5, color: "var(--t-danger)", fontSize: "0.75rem", padding: "2px 8px", cursor: "pointer" }}>
                           ✕
                         </button>
                       </td>
@@ -234,12 +237,12 @@ export default function ElectricalPage() {
             </div>
 
             <div style={{ display: "flex", gap: 12, marginTop: 20, flexWrap: "wrap" }}>
-              <button className="btn-primary" style={{ background: "linear-gradient(135deg, #b45309, #f59e0b)" }}
+              <button className="btn-primary"
                 onClick={() => setRan(true)}>
-                ▶ Analyse Load
+                <Play size={14} /> Analyse Load
               </button>
               <button onClick={addRow}
-                style={{ background: "rgba(0,191,255,0.1)", border: "1px solid rgba(0,191,255,0.3)", borderRadius: 8, color: "var(--accent2)", fontSize: "0.82rem", padding: "8px 16px", cursor: "pointer", fontWeight: 600 }}>
+                style={{ background: "color-mix(in srgb, var(--g2) 10%, transparent)", border: "1px solid color-mix(in srgb, var(--g2) 30%, transparent)", borderRadius: 8, color: "var(--accent2)", fontSize: "0.82rem", padding: "8px 16px", cursor: "pointer", fontWeight: 600 }}>
                 + Add Consumer
               </button>
             </div>
@@ -249,16 +252,16 @@ export default function ElectricalPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {!ran ? (
               <div className="glass" style={{ padding: isMobile ? 24 : 40, textAlign: "center" }}>
-                <div style={{ fontSize: "3rem", marginBottom: 12 }}>⚡</div>
+                <div className="empty-ic"><Zap size={30} /></div>
                 <p style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>Edit values, toggle loads ON/OFF, then click Analyse Load</p>
               </div>
             ) : result ? (
               <>
                 {[
                   { l: "Connected Load", v: `${result.totalKW.toLocaleString()} kW`, sub: `${result.totalKVA.toLocaleString()} kVA`, c: "var(--accent2)" },
-                  { l: "Demand Load (×0.85)", v: `${result.demandKW.toLocaleString()} kW`, sub: `${result.demandKVA.toLocaleString()} kVA`, c: "#f59e0b" },
-                  { l: "Average Power Factor", v: result.avgPF.toString(), sub: result.avgPF < 0.85 ? "⚠ Below 0.85 — consider PF correction" : "✓ Acceptable", c: result.avgPF < 0.85 ? "#ef4444" : "var(--success)" },
-                  { l: "Recommended Generator", v: `${result.recommended.toLocaleString()} kVA`, sub: `2× units (N+1 redundancy)`, c: "#a78bfa" },
+                  { l: "Demand Load (×0.85)", v: `${result.demandKW.toLocaleString()} kW`, sub: `${result.demandKVA.toLocaleString()} kVA`, c: "var(--t-warn)" },
+                  { l: "Average Power Factor", v: result.avgPF.toString(), sub: result.avgPF < 0.85 ? "⚠ Below 0.85 — consider PF correction" : "✓ Acceptable", c: result.avgPF < 0.85 ? "var(--t-danger)" : "var(--success)" },
+                  { l: "Recommended Generator", v: `${result.recommended.toLocaleString()} kVA`, sub: `2× units (N+1 redundancy)`, c: "var(--g3)" },
                 ].map(({ l, v, sub, c }) => (
                   <div key={l} className="glass" style={{ padding: "16px 18px" }}>
                     <div style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginBottom: 4 }}>{l}</div>
@@ -272,9 +275,9 @@ export default function ElectricalPage() {
                   <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
                       <Pie data={pieData} cx="50%" cy="50%" outerRadius={75} dataKey="value" fontSize={10}>
-                        {pieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                        {pieData.map((_, i) => <Cell key={i} fill={cv(COLORS[i % COLORS.length])} />)}
                       </Pie>
-                      <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.75rem" }} formatter={(v: number) => [`${v.toLocaleString()} kW`]} />
+                      <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)", borderRadius: 8, fontSize: "0.75rem" }} formatter={(v: number) => [`${v.toLocaleString()} kW`]} />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -289,20 +292,20 @@ export default function ElectricalPage() {
             <p style={{ color: "var(--text-dim)", fontSize: "0.8rem", marginBottom: 20 }}>kW and kVAR by consumer (running loads only)</p>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={barData} layout="vertical">
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" horizontal={false} />
-                <XAxis type="number" stroke="var(--text-dim)" fontSize={11} />
-                <YAxis dataKey="name" type="category" stroke="var(--text-dim)" fontSize={10} width={170} />
-                <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.8rem" }} formatter={(v: number) => [`${v.toLocaleString()} `]} />
+                <CartesianGrid strokeDasharray="3 3" stroke={cv("var(--border)")} horizontal={false} />
+                <XAxis type="number" stroke={cv("var(--text-dim)")} fontSize={11} />
+                <YAxis dataKey="name" type="category" stroke={cv("var(--text-dim)")} fontSize={10} width={170} />
+                <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)", borderRadius: 8, fontSize: "0.8rem" }} formatter={(v: number) => [`${v.toLocaleString()} `]} />
                 <Legend wrapperStyle={{ fontSize: "0.8rem" }} />
-                <Bar dataKey="kW" fill="var(--accent2)" name="Active Power (kW)" radius={[0,3,3,0]} />
-                <Bar dataKey="kVAR" fill="#f59e0b" name="Reactive Power (kVAR)" radius={[0,3,3,0]} />
+                <Bar dataKey="kW" fill={cv("var(--accent2)")} name="Active Power (kW)" radius={[0,3,3,0]} />
+                <Bar dataKey="kVAR" fill={cv("var(--t-warn)")} name="Reactive Power (kVAR)" radius={[0,3,3,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         )}
 
         <div className="glass" style={{ marginTop: 24, padding: "14px 20px", display: "flex", gap: 10, alignItems: "center" }}>
-          <span>⚙️</span>
+          <Info size={15} color="var(--faint)" style={{ flexShrink: 0, marginTop: 1 }} />
           <span style={{ fontSize: "0.78rem", color: "var(--text-dim)" }}>
             Electrical plant analysis · IEC 60092 / SOLAS load table methodology · Diversity factors per DNV-RP-0353.
           </span>

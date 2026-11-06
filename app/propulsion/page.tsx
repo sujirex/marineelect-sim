@@ -1,7 +1,9 @@
 "use client"
 import { useState, useMemo } from "react"
 import Navbar from "../components/Navbar"
+import { Fan, Play, Anchor, Info } from "lucide-react"
 import { useIsMobile } from "../hooks/useIsMobile"
+import { useCssVar } from "../../context/useCssVar"
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   ResponsiveContainer, ReferenceLine
@@ -59,6 +61,7 @@ function computePerf(D: number, n: number, Va: number, rho: number, AeAo: number
 
 export default function PropulsionPage() {
   const isMobile = useIsMobile()
+  const cv = useCssVar()
   const [AeAo, setAeAo] = useState(0.70)
   const [z, setZ]       = useState(4)
   const [PD, setPD]     = useState(1.0)
@@ -77,8 +80,8 @@ export default function PropulsionPage() {
     const p = PRESETS[key]; setAeAo(p.AeAo); setZ(p.z); setPD(p.PD); setD(p.D); setN(p.n); setVa(p.Va); setBollard(false); setRan(false)
   }
 
-  const numInputStyle: React.CSSProperties = { width: 64, background: "rgba(0,212,170,0.07)", border: "1px solid rgba(0,212,170,0.2)", borderRadius: 5, color: "var(--text-strong)", fontSize: "0.78rem", padding: "3px 6px", outline: "none", textAlign: "right" as const }
-  const numInputStyleBlue: React.CSSProperties = { ...numInputStyle, background: "rgba(0,191,255,0.07)", border: "1px solid rgba(0,191,255,0.2)" }
+  const numInputStyle: React.CSSProperties = { width: 64, background: "color-mix(in srgb, var(--ok) 7%, transparent)", border: "1px solid color-mix(in srgb, var(--ok) 20%, transparent)", borderRadius: 5, color: "var(--text-strong)", fontSize: "0.78rem", padding: "3px 6px", outline: "none", textAlign: "right" as const }
+  const numInputStyleBlue: React.CSSProperties = { ...numInputStyle, background: "color-mix(in srgb, var(--g2) 7%, transparent)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)" }
   const chartH = isMobile ? 240 : 340
 
   const propFields = [
@@ -107,20 +110,20 @@ export default function PropulsionPage() {
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
           {Object.entries(PRESETS).map(([key, p]) => (
             <button key={key} onClick={() => applyPreset(key)}
-              style={{ background: "rgba(0,212,170,0.1)", border: "1px solid rgba(0,212,170,0.25)", borderRadius: 7, color: "var(--success)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
+              style={{ background: "color-mix(in srgb, var(--ok) 10%, transparent)", border: "1px solid color-mix(in srgb, var(--ok) 25%, transparent)", borderRadius: 7, color: "var(--success)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
               {p.label}
             </button>
           ))}
           <button onClick={() => { setBollard(b => !b); setRan(false) }}
-            style={{ background: bollard ? "rgba(245,158,11,0.15)" : "rgba(125,160,160,0.10)", border: `1px solid ${bollard ? "rgba(245,158,11,0.4)" : "rgba(125,160,160,0.35)"}`, borderRadius: 7, color: bollard ? "#f59e0b" : "var(--text-dim)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
-            ⚓ Bollard Pull
+            style={{ background: bollard ? "color-mix(in srgb, var(--t-warn) 15%, transparent)" : "color-mix(in srgb, var(--faint) 10%, transparent)", border: `1px solid ${bollard ? "color-mix(in srgb, var(--t-warn) 40%, transparent)" : "color-mix(in srgb, var(--faint) 35%, transparent)"}`, borderRadius: 7, color: bollard ? "var(--t-warn)" : "var(--text-dim)", fontSize: "0.75rem", padding: "5px 12px", cursor: "pointer", fontWeight: 600 }}>
+            <Anchor size={13} className="ic" /> Bollard Pull
           </button>
         </div>
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "300px 1fr", gap: 20, alignItems: "start" }}>
           {/* Inputs */}
           <div className="glass" style={{ padding: isMobile ? 16 : 24 }}>
-            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "var(--success)" }}>🔩 Propeller Parameters</h3>
+            <h3 style={{ fontWeight: 700, marginBottom: 16, fontSize: "0.95rem", color: "var(--ink)", display: "flex", alignItems: "center", gap: 8 }}><Fan size={16} color="var(--g3)" /> Propeller Parameters</h3>
             {propFields.map(({ label, val, set: setter, min, max, step, accent, style: ns }) => (
               <div key={label} style={{ marginBottom: 12 }}>
                 <label style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "var(--text-dim)", marginBottom: 4 }}>
@@ -133,7 +136,7 @@ export default function PropulsionPage() {
                   style={{ width: "100%", accentColor: accent }} />
               </div>
             ))}
-            <div style={{ marginTop: 10, paddingTop: 12, borderTop: "1px solid rgba(0,191,255,0.1)" }}>
+            <div style={{ marginTop: 10, paddingTop: 12, borderTop: "1px solid color-mix(in srgb, var(--g2) 10%, transparent)" }}>
               <h4 style={{ fontSize: "0.82rem", color: "var(--accent2)", fontWeight: 600, marginBottom: 12 }}>Operating Conditions</h4>
               {opFields.map(({ label, val, set: setter, min, max, step, accent, style: ns, disabled }) => (
                 <div key={label} style={{ marginBottom: 12 }}>
@@ -148,8 +151,8 @@ export default function PropulsionPage() {
                 </div>
               ))}
             </div>
-            <button className="btn-primary" style={{ width: "100%", marginTop: 8, background: "linear-gradient(135deg, #00664d, var(--success))" }} onClick={() => setRan(true)}>
-              ▶ Compute Performance
+            <button className="btn-primary" style={{ width: "100%", marginTop: 8 }} onClick={() => setRan(true)}>
+              <Play size={14} /> Compute Performance
             </button>
           </div>
 
@@ -157,7 +160,7 @@ export default function PropulsionPage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {!ran && (
               <div className="glass" style={{ padding: isMobile ? 32 : 60, textAlign: "center" }}>
-                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🔩</div>
+                <div className="empty-ic"><Fan size={30} /></div>
                 <p style={{ color: "var(--text-dim)" }}>Select a preset or configure propeller, then click <strong style={{ color: "var(--success)" }}>Compute Performance</strong></p>
               </div>
             )}
@@ -168,8 +171,8 @@ export default function PropulsionPage() {
                   {[
                     { l: "Thrust",       v: `${perf.thrust.toLocaleString()} kN`,  c: "var(--accent2)" },
                     { l: "Torque",       v: `${perf.torque.toLocaleString()} kNm`, c: "var(--success)" },
-                    { l: "Power (PD)",   v: `${perf.power.toLocaleString()} kW`,   c: "#f59e0b" },
-                    { l: "η Open Water", v: `${perf.efficiency}%`,                 c: "#a78bfa" },
+                    { l: "Power (PD)",   v: `${perf.power.toLocaleString()} kW`,   c: "var(--t-warn)" },
+                    { l: "η Open Water", v: `${perf.efficiency}%`,                 c: "var(--g3)" },
                   ].map(({ l, v, c }) => (
                     <div key={l} className="stat-card" style={{ textAlign: "center" }}>
                       <div style={{ fontSize: isMobile ? "0.95rem" : "1.1rem", fontWeight: 700, color: c }}>{v}</div>
@@ -185,13 +188,13 @@ export default function PropulsionPage() {
                   </div>
                   <div className="glass" style={{ padding: "12px 14px" }}>
                     <div style={{ fontSize: "0.7rem", color: "var(--text-dim)", marginBottom: 4 }}>Best Efficiency</div>
-                    <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "#a78bfa" }}>J = {bestJ}</div>
+                    <div style={{ fontSize: "1.1rem", fontWeight: 700, color: "var(--g3)" }}>J = {bestJ}</div>
                     <div style={{ fontSize: "0.68rem", color: "var(--text-dim)", marginTop: 2 }}>η = {(bestEta * 100).toFixed(1)}%</div>
                   </div>
                   <div className="glass" style={{ padding: "12px 14px" }}>
                     <div style={{ fontSize: "0.7rem", color: "var(--text-dim)", marginBottom: 4 }}>Cavitation (Ct={perf.Ct})</div>
-                    <div style={{ fontSize: "1rem", fontWeight: 700, color: perf.cavRisk === "high" ? "#ef4444" : perf.cavRisk === "moderate" ? "#f59e0b" : "var(--success)" }}>
-                      {perf.cavRisk === "high" ? "⚠ HIGH" : perf.cavRisk === "moderate" ? "⚡ MOD." : "✓ LOW"}
+                    <div style={{ fontSize: "1rem", fontWeight: 700, color: perf.cavRisk === "high" ? "var(--t-danger)" : perf.cavRisk === "moderate" ? "var(--t-warn)" : "var(--success)" }}>
+                      {perf.cavRisk === "high" ? "⚠ HIGH" : perf.cavRisk === "moderate" ? "⚠ MOD." : "✓ LOW"}
                     </div>
                     <div style={{ fontSize: "0.68rem", color: "var(--text-faint)", marginTop: 2 }}>Burrill criterion</div>
                   </div>
@@ -205,20 +208,20 @@ export default function PropulsionPage() {
                 <p style={{ color: "var(--text-dim)", fontSize: "0.75rem", marginBottom: 16 }}>
                   B{z}-{Math.round(AeAo * 100)} · P/D={PD}
                   {perf && <span style={{ color: "var(--accent2)" }}> · OP: J={perf.J}</span>}
-                  <span style={{ color: "#a78bfa" }}> · BEP: J={bestJ}</span>
+                  <span style={{ color: "var(--g3)" }}> · BEP: J={bestJ}</span>
                 </p>
                 <ResponsiveContainer width="100%" height={chartH}>
                   <LineChart data={curves}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                    <XAxis dataKey="J" stroke="var(--text-dim)" fontSize={10} label={{ value: "Advance Ratio J", position: "insideBottom", offset: -4, fill: "var(--text-dim)", fontSize: 10 }} />
-                    <YAxis stroke="var(--text-dim)" fontSize={10} domain={[0, 0.85]} />
-                    <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid rgba(0,191,255,0.2)", borderRadius: 8, fontSize: "0.78rem" }} />
+                    <CartesianGrid strokeDasharray="3 3" stroke={cv("var(--border)")} />
+                    <XAxis dataKey="J" stroke={cv("var(--text-dim)")} fontSize={10} label={{ value: "Advance Ratio J", position: "insideBottom", offset: -4, fill: cv("var(--text-dim)"), fontSize: 10 }} />
+                    <YAxis stroke={cv("var(--text-dim)")} fontSize={10} domain={[0, 0.85]} />
+                    <Tooltip contentStyle={{ background: "var(--card)", color: "var(--text)", border: "1px solid color-mix(in srgb, var(--g2) 20%, transparent)", borderRadius: 8, fontSize: "0.78rem" }} />
                     <Legend wrapperStyle={{ fontSize: "0.75rem", paddingTop: 8 }} />
-                    <ReferenceLine x={bestJ} stroke="rgba(167,139,250,0.5)" strokeDasharray="4 2" label={{ value: "BEP", position: "top", fill: "#a78bfa", fontSize: 9 }} />
-                    {perf && <ReferenceLine x={perf.J} stroke="rgba(0,191,255,0.6)" strokeWidth={1.5} label={{ value: "OP", position: "insideTopRight", fill: "var(--accent2)", fontSize: 9 }} />}
-                    <Line type="monotone" dataKey="KT"   stroke="var(--accent2)" strokeWidth={2.5} dot={false} name="KT" />
-                    <Line type="monotone" dataKey="KQ10" stroke="#f59e0b" strokeWidth={2}   dot={false} name="10·KQ" />
-                    <Line type="monotone" dataKey="eta"  stroke="var(--success)" strokeWidth={2.5} dot={false} name="η" />
+                    <ReferenceLine x={bestJ} stroke={cv("var(--g3)")} strokeOpacity={0.5} strokeDasharray="4 2" label={{ value: "BEP", position: "top", fill: cv("var(--g3)"), fontSize: 9 }} />
+                    {perf && <ReferenceLine x={perf.J} stroke={cv("var(--g2)")} strokeOpacity={0.6} strokeWidth={1.5} label={{ value: "OP", position: "insideTopRight", fill: cv("var(--accent2)"), fontSize: 9 }} />}
+                    <Line type="monotone" dataKey="KT"   stroke={cv("var(--accent2)")} strokeWidth={2.5} dot={false} name="KT" />
+                    <Line type="monotone" dataKey="KQ10" stroke={cv("var(--t-warn)")} strokeWidth={2}   dot={false} name="10·KQ" />
+                    <Line type="monotone" dataKey="eta"  stroke={cv("var(--success)")} strokeWidth={2.5} dot={false} name="η" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -227,7 +230,7 @@ export default function PropulsionPage() {
         </div>
 
         <div className="glass" style={{ marginTop: 24, padding: "12px 16px", display: "flex", gap: 10, alignItems: "flex-start" }}>
-          <span>⚙️</span>
+          <Info size={15} color="var(--faint)" style={{ flexShrink: 0, marginTop: 1 }} />
           <span style={{ fontSize: "0.75rem", color: "var(--text-dim)" }}>
             Wageningen B-series · Oosterveld & van Oossanen (1975) · Cavitation: Burrill Ct criterion.
           </span>
