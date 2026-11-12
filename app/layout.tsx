@@ -8,7 +8,7 @@ const geistMono = localFont({ src: "./fonts/GeistMono.woff2", variable: "--font-
 
 export const metadata: Metadata = {
   title: "MarineElect Simulation Engine",
-  description: "Ship maneuvering, propulsion, and electrical simulation for marine engineers",
+  description: "MarineElect Simulation Engine: ship maneuvering, propulsion and electrical power simulation in the browser, built for marine engineers and students.",
   authors: [{ name: "Suji Kumar C", url: "https://sujikumar.com" }],
 };
 
